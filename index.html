@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Williams Music Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #000;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 1.8em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .progress {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-card {
+            border: 2px solid #000;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .quiz-card.active {
+            display: block;
+        }
+        
+        .question-number {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .audio-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .audio-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        audio {
+            width: 100%;
+            max-width: 400px;
+            margin: 10px auto;
+            display: block;
+        }
+        
+        .hint-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .hint-btn {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+        }
+        
+        .hint-btn:hover {
+            background: #eee;
+        }
+        
+        .hint-audio {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        .hint-audio.visible {
+            display: block;
+        }
+        
+        .answer-section {
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .reveal-btn {
+            background: #000;
+            color: #fff;
+            border: 2px solid #000;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        
+        .reveal-btn:hover {
+            background: #333;
+        }
+        
+        .answer-reveal {
+            display: none;
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .answer-reveal.visible {
+            display: block;
+        }
+        
+        .movie-title {
+            font-size: 1.6em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .theme-name {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .next-btn {
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
+            padding: 12px 40px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .next-btn:hover {
+            background: #eee;
+        }
+        
+        .final-card {
+            text-align: center;
+            padding: 40px 25px;
+        }
+        
+        .final-card h2 {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        
+        .restart-btn {
+            background: #000;
+            color: #fff;
+            border: 2px solid #000;
+            padding: 12px 40px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 1em;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+        
+        .restart-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>John Williams Music Quiz</h1>
+        <p class="subtitle">Name the film from a fragment of the score</p>
+        
+        <div class="progress">
+            Question <span id="current">1</span> of <span id="total">8</span>
+        </div>
+
+        <!-- Question 1: E.T. -->
+        <div class="quiz-card active" data-question="1">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="Flying_Theme___From_the_Soundtrack_to__E_T__The_Extra-Terrestrial__by_John_Williams_--_frag.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(1)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-1">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="Flying_Theme___From_the_Soundtrack_to__E_T__The_Extra-Terrestrial__by_John_Williams.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(1)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-1">
+                    <div class="movie-title">E.T. the Extra-Terrestrial</div>
+                    <div class="theme-name">"Flying Theme" (1982)</div>
+                    <button class="next-btn" onclick="nextQuestion(2)">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2: Harry Potter -->
+        <div class="quiz-card" data-question="2">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="Hedwig_s_Theme_--_frag.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(2)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-2">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="Hedwig_s_Theme.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(2)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-2">
+                    <div class="movie-title">Harry Potter</div>
+                    <div class="theme-name">"Hedwig's Theme" (2001)</div>
+                    <button class="next-btn" onclick="nextQuestion(3)">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3: Star Wars (Binary Sunset) -->
+        <div class="quiz-card" data-question="3">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="John_Williams_-_Binary_Sunset_--_frag_.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(3)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-3">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="John_Williams_-_Binary_Sunset__Star_Wars_a_new_hope_O_S_T__.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(3)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-3">
+                    <div class="movie-title">Star Wars: A New Hope</div>
+                    <div class="theme-name">"Binary Sunset" / "The Force Theme" (1977)</div>
+                    <button class="next-btn" onclick="nextQuestion(4)">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 4: Hook -->
+        <div class="quiz-card" data-question="4">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="Presenting_The_Hook_--_frag.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(4)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-4">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="Presenting_The_Hook.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(4)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-4">
+                    <div class="movie-title">Hook</div>
+                    <div class="theme-name">"Presenting The Hook" (1991)</div>
+                    <button class="next-btn" onclick="nextQuestion(5)">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 5: Imperial March -->
+        <div class="quiz-card" data-question="5">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="Star_Wars-_The_Imperial_March__Darth_Vader_s_Theme__--_frag.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(5)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-5">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="Star_Wars-_The_Imperial_March__Darth_Vader_s_Theme_.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(5)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-5">
+                    <div class="movie-title">Star Wars: The Empire Strikes Back</div>
+                    <div class="theme-name">"The Imperial March" (1980)</div>
+                    <button class="next-btn" onclick="nextQuestion(6)">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 6: Superman -->
+        <div class="quiz-card" data-question="6">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="Superman___Main_Theme___John_Williams_--_frag.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(6)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-6">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="Superman___Main_Theme___John_Williams.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(6)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-6">
+                    <div class="movie-title">Superman</div>
+                    <div class="theme-name">"Main Theme" (1978)</div>
+                    <button class="next-btn" onclick="nextQuestion(7)">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 7: Raiders -->
+        <div class="quiz-card" data-question="7">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="The_Raiders_March__Original_Version__-_John_Williams_--_frag.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(7)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-7">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="The_Raiders_March__Original_Version__-_John_Williams.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(7)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-7">
+                    <div class="movie-title">Raiders of the Lost Ark</div>
+                    <div class="theme-name">"The Raiders March" (1981)</div>
+                    <button class="next-btn" onclick="nextQuestion(8)">Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 8: Jurassic Park -->
+        <div class="quiz-card" data-question="8">
+            <div class="question-number">Listen to this fragment...</div>
+            
+            <div class="audio-section">
+                <span class="audio-label">Fragment</span>
+                <audio controls>
+                    <source src="Theme_From_Jurassic_Park_-_frag--.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <div class="hint-section">
+                <button class="hint-btn" onclick="showHint(8)">Need a Hint? Play More</button>
+                <div class="hint-audio" id="hint-8">
+                    <span class="audio-label">Extended Clip</span>
+                    <audio controls>
+                        <source src="Theme_From_Jurassic_Park.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            
+            <div class="answer-section">
+                <button class="reveal-btn" onclick="showAnswer(8)">Reveal Answer</button>
+                <div class="answer-reveal" id="answer-8">
+                    <div class="movie-title">Jurassic Park</div>
+                    <div class="theme-name">"Theme from Jurassic Park" (1993)</div>
+                    <button class="next-btn" onclick="showFinal()">Finish</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Card -->
+        <div class="quiz-card final-card" data-question="final">
+            <h2>Quiz Complete!</h2>
+            <p>Great job, Benjamin!</p>
+            <button class="restart-btn" onclick="restart()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        function showHint(num) {
+            document.getElementById('hint-' + num).classList.add('visible');
+        }
+        
+        function showAnswer(num) {
+            document.getElementById('answer-' + num).classList.add('visible');
+        }
+        
+        function nextQuestion(num) {
+            document.querySelectorAll('audio').forEach(a => {
+                a.pause();
+                a.currentTime = 0;
+            });
+            
+            document.querySelectorAll('.quiz-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            document.querySelector('[data-question="' + num + '"]').classList.add('active');
+            document.getElementById('current').textContent = num;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function showFinal() {
+            document.querySelectorAll('audio').forEach(a => {
+                a.pause();
+                a.currentTime = 0;
+            });
+            
+            document.querySelectorAll('.quiz-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            document.querySelector('[data-question="final"]').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function restart() {
+            document.querySelectorAll('.hint-audio').forEach(el => {
+                el.classList.remove('visible');
+            });
+            document.querySelectorAll('.answer-reveal').forEach(el => {
+                el.classList.remove('visible');
+            });
+            
+            document.querySelectorAll('audio').forEach(a => {
+                a.pause();
+                a.currentTime = 0;
+            });
+            
+            document.querySelectorAll('.quiz-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector('[data-question="1"]').classList.add('active');
+            document.getElementById('current').textContent = '1';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
